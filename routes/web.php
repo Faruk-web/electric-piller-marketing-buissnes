@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RawMaterial;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PurchaseInvoiceController;
 
 
 
@@ -35,8 +36,8 @@ Route::get('/supplier/create', [SupplierController::class, 'index'])->name('supp
 Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
 
 //purchase invoice
-Route::get('/purchase/invoice/create', [SupplierController::class, 'Invoice'])->name('purchase.invoice');
-    
-
+Route::get('/purchase/invoice/create', [PurchaseInvoiceController::class, 'Invoice'])->name('purchase.invoice');
+Route::get('/purchase/invoice/search-project', [PurchaseInvoiceController::class, 'search_project']);
+Route::post('/purchase/invoice/store', [PurchaseInvoiceController::class, 'store'])->name('purchase.store');
     
 });

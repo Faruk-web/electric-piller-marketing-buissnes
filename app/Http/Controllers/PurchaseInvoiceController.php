@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\PurchaseInvoice;
+use App\Models\PurchaseMaterial;
 use App\Models\Material;
+use App\Models\RawMaterialStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -101,7 +103,7 @@ class PurchaseInvoiceController extends Controller
                             })
                             ->limit(10)
                             ->get(['supplier_id', 'invioce_number', 'id']);
-// dd($members);
+         // dd($members);
           if(!empty($member_info)) {
               if(count($members) > 0) {
                 foreach ($members as $member) {
@@ -122,5 +124,35 @@ class PurchaseInvoiceController extends Controller
         }
         return Response($output);
     }
+    //first resulation details end
+    public function purchase_material_submite(Request $request){
+        // dd($request->supplier_id);
+        $material_id=Material::Where('material_name',$request->material_id)->first();
+        foreach($request->supplier_id as $key => $item) {
+        $raw_material_stock =   new RawMaterialStock;
+        $total_stocks = RawMaterialStock::sum('stock_quantity');
+        $stock_quantitys = ($total_stocks+$request->quantity[$key]);
+        $raw_material_stock->material_id	=$material_id->id;
+        $raw_material_stock->stock_quantity=$stock_quantitys;
+        $raw_material_stock->date	=$request->date;
+        $raw_material_stock->save();
+    }
+        $material_id=Material::where('material_name',$request->material_id)->first();
+        
+        foreach($request->supplier_id as $key => $item) {
+        $purchase_material=new PurchaseMaterial;
+        $purchase_material->supplier_id	=$request->supplier_id[$key];
+        $purchase_material->invioce_number	=$request->invioce_number[$key];
+        $purchase_material->quantity	=$request->quantity[$key];
+        $purchase_material->price	=$request->price[$key];
+        $purchase_material->total_price	=$request->total_price[$key];
+        $purchase_material->date	=$request->date;
+        $purchase_material->material_id	=$material_id->id;
+        $purchase_material->save();
+       }
+
+      
+    return back()->with('success','First Purchase Material Successfully Done');
+}
     
 }

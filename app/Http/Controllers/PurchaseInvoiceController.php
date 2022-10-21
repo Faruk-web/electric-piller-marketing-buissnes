@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\PurchaseInvoice;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -21,7 +22,7 @@ class PurchaseInvoiceController extends Controller
                                     ->orWhere('phone', 'LIKE', '%'. $project_info. '%');
                             })
                             ->get(['supplier_name','phone', 'id']);
-// dd($projects);
+          // dd($projects);
           if(!empty($project_info)) {
               if(count($projects) > 0) {
                 foreach ($projects as $project) {
@@ -42,11 +43,9 @@ class PurchaseInvoiceController extends Controller
     //store
     public function store(Request $request)
     {
-        // dd($request);
         $validated = $request->validate([
             'supplier_name' => 'required',           
         ]);
-
         $supplier_id = Supplier::where('supplier_name', $request->supplier_name)->first('id');
         $project = new PurchaseInvoice;
         $total_projects = PurchaseInvoice::count('id');
@@ -56,10 +55,72 @@ class PurchaseInvoiceController extends Controller
         $project->date = $request->date;
         $project->note = $request->note;
         $project->total_gross = $request->total_gross;
-        // $project->status = 'members';
         $project->date = Carbon::now();
         $project->created_at = Carbon::now();
         $project->save();
         return Redirect()->back()->with('success', 'New Purchase Added');
     }
+    // ==========================================================
+    //purchase Invoice
+    public function purchase_material(){
+        return view('purchase.purchase_material');
+    }
+     //search project end
+     public function search_doner(Request $request) {
+        $output = '';
+        $doner_info = $request->doner_info;
+          $doners = Material::where(function ($query) use ($doner_info){
+                                $query->where('unit_type', 'LIKE', '%'. $doner_info. '%')
+                                    ->orWhere('material_name', 'LIKE', '%'. $doner_info. '%');
+                            })
+                            ->get(['material_name', 'unit_type', 'id']);
+
+          if(!empty($doner_info)) {
+              if(count($doners) > 0) {
+                foreach ($doners as $doner) {
+                    $output.='<tr>
+                        <td>'.$doner->material_name.'</td>
+                        <td>'.$doner->unit_type.'</td>
+                        <td><button type="button" onclick="setDonerInfo(\''.$doner->material_name.'\', \''.$doner->unit_type.'\')" class="btn btn-primary btn-sm btn-rounded">Select</button></td>
+                        </tr>';
+                    }
+              }
+              else {
+                $output.='<tr><td colspan="6" class="text-center"><h2>No Result Found</h2></td></tr>';
+            }
+        }
+        return Response($output);
+    }
+    // search_member
+    public function search_member(Request $request) {
+        $output = '';
+        $member_info = $request->member_info;
+          $members = PurchaseInvoice::where(function ($query) use ($member_info) {
+                                $query->where('invioce_number', 'LIKE', '%'. $member_info. '%')
+                                    ->orWhere('supplier_id', 'LIKE', '%'. $member_info. '%');
+                            })
+                            ->limit(10)
+                            ->get(['supplier_id', 'invioce_number', 'id']);
+// dd($members);
+          if(!empty($member_info)) {
+              if(count($members) > 0) {
+                foreach ($members as $member) {
+                    $output.='<div class="col-md-12 p-1">
+                                <div class="shadow row rounded border">
+                                    <div class="col-md-12 p-2">
+                                        <h5 class="m-0">'.$member->supplier_id.'</h5>
+                                        <span>'.$member->invioce_number.'</span><br>
+                                        <button type="button" onclick="setMember('.$member->id.', \''.$member->supplier_id.'\', \''.$member->invioce_number.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button>
+                                    </div>
+                                </div>
+                            </div>';
+                    }
+              }
+              else {
+                $output.='<div colspan="6" class="text-center"><h2>No Result Found</h2></div>';
+            }
+        }
+        return Response($output);
+    }
+    
 }

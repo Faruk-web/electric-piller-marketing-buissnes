@@ -39,5 +39,8 @@ Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supp
 Route::get('/purchase/invoice/create', [PurchaseInvoiceController::class, 'Invoice'])->name('purchase.invoice');
 Route::get('/purchase/invoice/search-project', [PurchaseInvoiceController::class, 'search_project']);
 Route::post('/purchase/invoice/store', [PurchaseInvoiceController::class, 'store'])->name('purchase.store');
-    
+Route::get('/purchase/material/create', [PurchaseInvoiceController::class, 'purchase_material'])->name('purchase.material');
+Route::get('/purchase/material/submite', [PurchaseInvoiceController::class, 'purchase_material_submite'])->name('purchase.material.submite');
+Route::get('/search_member', [PurchaseInvoiceController::class, 'search_member']);
+Route::get('/create/search-doner', [PurchaseInvoiceController::class, 'search_doner']);
 });

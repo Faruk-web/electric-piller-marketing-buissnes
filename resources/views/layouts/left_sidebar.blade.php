@@ -87,6 +87,11 @@
                                 <span class="nav-main-link-name">Purcharse Invoice</span>
                             </a>
                         </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('purchase.material')}}">
+                                <span class="nav-main-link-name">Purcharse material</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

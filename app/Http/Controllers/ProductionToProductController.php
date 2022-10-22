@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\ProductInvoice;
 use App\Models\RawMaterialStock;
-
+use App\Models\Material;
+use App\Models\ProductionMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use DataTables;
@@ -117,58 +118,100 @@ class ProductionToProductController extends Controller
 
     public function production_material_store(Request $request)
     {  
-        dd($request);
-
+        // dd($request);
         $total_invoice = ProductInvoice::count('id');
         $update_count = $total_invoice + 1;
         $invoice_number = "P".rand(1000, 9999).$update_count;
-
         $total_cost = 0;
-
-            foreach($pid as $key => $item) {
-                $unit = $request->quantity[$key];
-                $material_id = $material_id[$key];
+            foreach($request->raw_material_id as $key => $item) { 
+                $quantity = $request->quantity[$key];
+                $material_id = $request->raw_material_id[$key];
                 $price = $request->price[$key];
-                
-                $check_raw_materials_stock =RawMaterialStock::where('material_id', $material_id)->first();
-                
+                $raw_materials_stock =Material::where('material_name', $material_id)->first(); 
+                $check_raw_materials_stock =RawMaterialStock::where('material_id', $raw_materials_stock->id)->first();
+          
                 if(!is_null($check_raw_materials_stock)) {
                     $db_stock = $check_raw_materials_stock->stock_quantity;
+                    //  dd($db_stock ); 
                     if($db_stock >= $quantity) {
-                        
                         $total_price = $quantity * $price;
-
                         $production_materials = new ProductionMaterial;
-                        $production_materials->raw_material_id = $material_id;
+                        $production_materials->raw_material_id = $raw_materials_stock->id;
                         $production_materials->invioce_number = $invoice_number;
-                            
-                        
+                        $production_materials->total_price = $total_price;  
+                        $production_materials->quantity = $quantity; 
+                        $production_materials->price = $price; 
+                        $production_materials->date = $request->date; 
                         $rests_qty = $db_stock - $quantity;
+                        
                         if($rests_qty == 0) {
                             $check_raw_materials_stock::delete();
                         }
                         else {
-                            DB::table('product_stocks')->where(['id'=>$check_product->id, 'shop_id'=>$shop_id])->update(['stock'=>$rest_quantity, 'cartoon_amount'=>$rest_cartoon_qty]);
+                            // $check_raw_materials_stock::update();
                         }
-                        
-                        $total_cost = $total_cost + $total_price;
-
                     }
+                    $production_materials->save();
+                        return Redirect()->back()->with('success', 'New product invoice Added');
                     
                 }
             }
 
-            $insert = BranchToSRproductsTransfer::insert(['shop_id'=>$shop_id, 'user_id'=>Auth::user()->id, 'invoice_id'=>$invoice_id, 'sender_branch_id'=>$sender_branch, 'sr_id'=>$sr_id, 'note'=>$request->note, 'date'=>$date, 'created_at'=>$current_time]);
-            if($insert) {
-                DB::table('moments_traffics')->insert(['shop_id' => $shop_id, 'user_id' => Auth::user()->id, 'info' => 'Stock Out from Branch To SR Transfer (BTSR). Invoice num '.$invoice_id, 'created_at' => $current_time]);
-                return Redirect()->route('b.to.sr.transfer.index')->with('success', 'Stock Out from Branch To SR Transfer Successfully done.');
-            }
-            else {
-                return Redirect()->back()->with('error', 'Sorry something is wrong, please try again.');
-            }
+           
             return Redirect()->back()->with('error', 'Sorry you can not access this page');
      
     }
+    // ==============================================================
+    public function search_product(Request $request) {
+        $output = '';
+        $product_info = $request->product_info;
+          $products = Material::where(function ($query) use ($product_info) {
+                                $query->where('material_name', 'LIKE', '%'. $product_info. '%');
+    
+                            })
+                            ->limit(10)
+                            ->get(['material_name', 'unit_type', 'id']);
+    
+          if(!empty($product_info)) {
+              if(count($products) > 0) {
+                $output .= '<table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">material_name</th>
+                        <th scope="col">Unit Type</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>';
+                foreach ($products as $product) {
+    
+                    $output.='<tr>'.
+                    '<td>
+                 ' .$product->material_name.'
+                    </td>'.
+                    '<td>
+    
+                 ' .$product->unit_type.'
+                    </td>'.
+                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->material_name.'\', \''.$product->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
+    
+                        '</tr>';
+                    }
+                $output .= '</tbody>
+            </table>';
+    
+    
+              }
+              else {
+                $output.='<div colspan="6" class="text-center"><h2>No Result Found</h2></div>';
+            }
+        }
+        return Response($output);
+    }
+    public function reqsubmit(){
+        return view('invoice.list');
+    }
+    
 
 
 }

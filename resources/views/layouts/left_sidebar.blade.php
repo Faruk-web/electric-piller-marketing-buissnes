@@ -158,6 +158,11 @@
                                 <span class="nav-main-link-name">Production Material List</span>
                             </a>
                         </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('production.material.list')}}">
+                                <span class="nav-main-link-name">Production Material List2</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

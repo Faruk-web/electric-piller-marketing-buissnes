@@ -71,4 +71,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search_member', [ProductionToProductController::class, 'search_member']);
     Route::get('/create/search-doner', [ProductionToProductController::class, 'search_doner']);
     Route::post('/production/material/store', [ProductionToProductController::class, 'production_material_store'])->name('production.material.store');
+    Route::get('/submit', [ProductionToProductController::class, 'reqsubmit'])->name('production.material.list');
+     Route::get('/search_product', [ProductionToProductController::class, 'search_product']);
 });

@@ -168,9 +168,8 @@ class PurchaseInvoiceController extends Controller
                 ->addColumn('action', function($row){
                     return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
                 })
-                
-                ->addColumn('supplier_id', function($row){
-                    return $row->supplier_id;
+                ->addColumn('supplier_name', function($row){
+                    return optional($row->senderSupplierInfo)->supplier_name;
                 })
                 ->addColumn('invioce_number', function($row){
                     return $row->invioce_number;
@@ -179,7 +178,7 @@ class PurchaseInvoiceController extends Controller
                     return $row->total_gross;
                 })
                 
-                ->rawColumns(['action', 'supplier_id', 'invioce_number','total_gross'])
+                ->rawColumns(['action', 'supplier_name', 'invioce_number','total_gross'])
                 ->make(true);
         }
       

@@ -30,7 +30,7 @@
         <table class="table table-bordered data-table display nowrap">
           <thead>
               <tr>
-                  <th>Supplier ID</th>
+                  <th>Supplier Name</th>
                   <th>Invoice Number</th>
                   <th >Total Gross</th>
                   <th>Action</th>
@@ -120,7 +120,7 @@
         serverSide: true,
         ajax: "{{ route('purchase.invoice.data') }}",
         columns: [
-            {data: 'supplier_id', name: 'supplier_id'},
+            {data: 'supplier_name', name: 'supplier_name'},
             {data: 'invioce_number', name: 'invioce_number'},
             {data: 'total_gross', name: 'total_gross'},
             {data: 'action', name: 'action'},

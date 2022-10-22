@@ -8,6 +8,7 @@ use App\Models\Material;
 use App\Models\RawMaterialStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use DataTables;
 
 class PurchaseInvoiceController extends Controller
 {
@@ -125,34 +126,90 @@ class PurchaseInvoiceController extends Controller
         return Response($output);
     }
     //first resulation details end
-    public function purchase_material_submite(Request $request){
-        // dd($request->supplier_id);
-        $material_id=Material::Where('material_name',$request->material_id)->first();
-        foreach($request->supplier_id as $key => $item) {
-        $raw_material_stock =   new RawMaterialStock;
-        $total_stocks = RawMaterialStock::sum('stock_quantity');
-        $stock_quantitys = ($total_stocks+$request->quantity[$key]);
-        $raw_material_stock->material_id	=$material_id->id;
-        $raw_material_stock->stock_quantity=$stock_quantitys;
-        $raw_material_stock->date	=$request->date;
-        $raw_material_stock->save();
-    }
-        $material_id=Material::where('material_name',$request->material_id)->first();
-        
-        foreach($request->supplier_id as $key => $item) {
-        $purchase_material=new PurchaseMaterial;
-        $purchase_material->supplier_id	=$request->supplier_id[$key];
-        $purchase_material->invioce_number	=$request->invioce_number[$key];
-        $purchase_material->quantity	=$request->quantity[$key];
-        $purchase_material->price	=$request->price[$key];
-        $purchase_material->total_price	=$request->total_price[$key];
-        $purchase_material->date	=$request->date;
-        $purchase_material->material_id	=$material_id->id;
-        $purchase_material->save();
-       }
+        public function purchase_material_submite(Request $request){
+            // dd($request->supplier_id);
+            $material_id=Material::Where('material_name',$request->material_id)->first();
+            foreach($request->supplier_id as $key => $item) {
+            $raw_material_stock =   new RawMaterialStock;
+            $total_stocks = RawMaterialStock::sum('stock_quantity');
+            $stock_quantitys = ($total_stocks+$request->quantity[$key]);
+            $raw_material_stock->material_id	=$material_id->id;
+            $raw_material_stock->stock_quantity=$stock_quantitys;
+            $raw_material_stock->date	=$request->date;
+            $raw_material_stock->save();
+        }
+            $material_id=Material::where('material_name',$request->material_id)->first();
+            
+            foreach($request->supplier_id as $key => $item) {
+            $purchase_material=new PurchaseMaterial;
+            $purchase_material->supplier_id	=$request->supplier_id[$key];
+            $purchase_material->invioce_number	=$request->invioce_number[$key];
+            $purchase_material->quantity	=$request->quantity[$key];
+            $purchase_material->price	=$request->price[$key];
+            $purchase_material->total_price	=$request->total_price[$key];
+            $purchase_material->date	=$request->date;
+            $purchase_material->material_id	=$material_id->id;
+            $purchase_material->save();
+        }
 
+        
+        return back()->with('success','First Purchase Material Successfully Done');
+    }
+    //Invoice_list
+    public function Invoice_list(){
+        return view('purchase.purchase_list');
+    }
+    //data fache for lis
+    public function Invoice_list_data(Request $request){
+        if ($request->ajax()) {
+            $data = PurchaseInvoice::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                })
+                
+                ->addColumn('supplier_id', function($row){
+                    return $row->supplier_id;
+                })
+                ->addColumn('invioce_number', function($row){
+                    return $row->invioce_number;
+                })
+                ->addColumn('total_gross', function($row){
+                    return $row->total_gross;
+                })
+                
+                ->rawColumns(['action', 'supplier_id', 'invioce_number','total_gross'])
+                ->make(true);
+        }
       
-    return back()->with('success','First Purchase Material Successfully Done');
-}
+    }
+    //purchase_material_list
+    public function purchase_material_list(){
+        return view('purchase.purchase_material_list');
+    }
+    //data fache for lis
+    public function purchase_material_data(Request $request){
+        if ($request->ajax()) {
+            $data = PurchaseMaterial::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                })
+                ->addColumn('invioce_number', function($row){
+                    return $row->invioce_number;
+                })
+                ->addColumn('price', function($row){
+                    return $row->price;
+                })
+                ->addColumn('total_price', function($row){
+                    return $row->total_price;
+                })
+                
+                ->rawColumns(['action', 'invioce_number', 'price','total_price'])
+                ->make(true);
+        }
     
+    }
 }

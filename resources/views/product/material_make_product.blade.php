@@ -2,12 +2,12 @@
 @section('body_content')
 <div class="content">
     <div class="row">
-        <div class="col-md-8"><h4>Create Purchase Material</h4></div>
+        <div class="col-md-8"><h4>Material To Make Product</h4></div>
         <div class="col-md-2"></div>
         <div class="col-sm-12 col-xl-12 col-md-12">
             <div class="block block-rounded d-flex flex-column">
                 <div class="block-content block-content-full justify-content-between align-items-center">
-                <form method="POST" action="{{route('purchase.material.submite')}}">
+                <form method="POST" action="{{route('material.make.product.submite')}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-8 p-1">
@@ -28,14 +28,14 @@
                                 </div>
                                <div class="col-md-12">
                                     <div class="form-group">
-                                    <h4 class="m-0">Prasent Purchase Material =></h4>
+                                    <h4 class="m-0">Prasen Material info make product =></h4>
                                    <div id="selected_members" class="row p-3">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Supplier ID</th>
-                                                <th> Invoice Number</th>
-                                                <th> Quantity</th>
+                                                <th> Product Name</th>
+                                                <th> Price</th>
+                                                <th> Unit Amount</th>
                                                 <th> Price</th>
                                                 <th> Total price</th>
                                                 
@@ -56,8 +56,8 @@
                     <div class="col-md-4">
                         <div class="shadow">
                             <div class="form-group shadow rounded p-3">
-                                <label for="example-text-input-alt">Search Purchase Invoice</label>
-                                <input type="text" class="form-control" id="member_search" placeholder="Search By invoice number, supplier" name="member_search">
+                                <label for="example-text-input-alt">Search Products</label>
+                                <input type="text" class="form-control" id="member_search" placeholder="Search by product name , product cost" name="member_search">
                                 <div class="row mt-2 p-3" id="member_show_info">
 
                                 </div>
@@ -133,7 +133,7 @@ referrerpolicy="no-referrer"></script>
         var member_info = $(this).val();
         $.ajax({
             type: 'get',
-            url: '/search_member',
+            url: '/search_product',
             data: {
                 'member_info': member_info
             },
@@ -147,8 +147,8 @@ referrerpolicy="no-referrer"></script>
 
 <script>
 
-function setMember(id, supplier_id, invioce_number, type) {
-    var check = $('#supplier_id'+id).val();
+function setMember(id, production_cost, product_name, type) {
+    var check = $('#product_id'+id).val();
     if(check) {
         error("Member is exist.");
     }
@@ -156,19 +156,19 @@ function setMember(id, supplier_id, invioce_number, type) {
         const cartDom = `
                         <tr id="member_column_`+id+`">
                             <td>
-                            <input type="text" class="col-md-8" class="form-control m-0"  name="supplier_id[]" oninput="qty(`+id+`)" value="`+supplier_id+`" id="qty`+id+`" >
+                            <input type="text" class="col-md-8" class="form-control m-0"  name="product_id[]" oninput="qty(`+id+`)" value="`+product_name+`" id="qty`+id+`" >
                             </td>
                             <td> 
-                            <input type="text" class="col-md-10" class="form-control "   name="invioce_number[]" oninput="qty(`+id+`)" value="`+invioce_number+`" id="qty`+id+`" >
+                            <input type="text" class="col-md-10" class="form-control "   name="unit_amount[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
                             </td>
                             <td> 
-                            <input type="text" class="col-md-10" class="form-control "   name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
+                            <input type="text" class="col-md-10" class="form-control "   name="price[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
                             </td>
                             <td> 
-                            <input type="text" class="col-md-10" class="form-control "  name="price[]"  oninput="qty(`+id+`)" value="" id="qty`+id+`" >
+                            <input type="text" class="col-md-10" class="form-control "  name="total_price[]"  oninput="qty(`+id+`)" value="" id="qty`+id+`" >
                             </td>
                             <td> 
-                            <input type="text" class="col-md-10" class="form-control"   name="total_price[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
+                            <input type="text" class="col-md-10" class="form-control"   name="total_price[]" oninput="qty(`+id+`)" value="`+production_cost+`" id="qty`+id+`" >
                             </td>
                             <td>
                             <button type="button" onclick="delete_product(`+id+`)" class=" btn btn-danger btn-sm">X</button>

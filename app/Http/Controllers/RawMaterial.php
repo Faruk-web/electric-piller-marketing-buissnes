@@ -12,6 +12,35 @@ class RawMaterial extends Controller
     public function rawmaterial(){
         return view('material.index');
     }
+    //rawmateriallist
+     public function rawmateriallist(){
+        return view('material.list');
+    }
+    //list
+    public function rawmaterial_data(Request $request){
+        if ($request->ajax()) {
+            $data = Material::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                })
+                
+                ->addColumn('material_name', function($row){
+                    return $row->material_name;
+                })
+                ->addColumn('unit_type', function($row){
+                    return $row->unit_type;
+                })
+                ->addColumn('price', function($row){
+                    return $row->price;
+                })
+                
+                ->rawColumns(['action', 'material_name', 'unit_type','price'])
+                ->make(true);
+        }
+      
+    }
     public function rawmaterialstore(Request $request)
     
     {

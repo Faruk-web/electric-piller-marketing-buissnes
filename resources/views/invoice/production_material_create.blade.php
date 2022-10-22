@@ -2,22 +2,22 @@
 @section('body_content')
 <div class="content">
     <div class="row">
-        <div class="col-md-8"><h4>Create Purchase Material</h4></div>
+        <div class="col-md-8"><h4>Create Production Material</h4></div>
         <div class="col-md-2"></div>
         <div class="col-sm-12 col-xl-12 col-md-12">
             <div class="block block-rounded d-flex flex-column">
                 <div class="block-content block-content-full justify-content-between align-items-center">
-                <form method="POST" action="{{route('purchase.material.submite')}}">
+                <form method="POST" action="{{route('production.material.store')}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-8 p-1">
                         <div class="shadow rounded p-2 mb-4">
-                            <h4 class="fw-bold">Set Raw Material Info or <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal" style="cursor: grab;">Search Raw Material</span></h4>
+                            <h4 class="fw-bold">Set Raw Material stock Info or <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal" style="cursor: grab;">Search Raw Material stocks</span></h4>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="example-text-input-alt"><span class="text-danger">*</span>Material Name</label>
-                                        <input type="text" class="form-control" name="material_id" id="project_name" value="">
+                                        <label for="example-text-input-alt"><span class="text-danger">*</span>Material ID</label>
+                                        <input type="text" class="form-control" name="raw_material_id" id="project_code" value="">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -28,12 +28,11 @@
                                 </div>
                                <div class="col-md-12">
                                     <div class="form-group">
-                                    <h4 class="m-0">Prasent Purchase Material =></h4>
+                                    <h4 class="m-0">Prasent Production Material =></h4>
                                    <div id="selected_members" class="row p-3">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Supplier ID</th>
                                                 <th> Invoice Number</th>
                                                 <th> Quantity</th>
                                                 <th> Price</th>
@@ -56,7 +55,7 @@
                     <div class="col-md-4">
                         <div class="shadow">
                             <div class="form-group shadow rounded p-3">
-                                <label for="example-text-input-alt">Search Purchase Invoice</label>
+                                <label for="example-text-input-alt">Search Product Invoice</label>
                                 <input type="text" class="form-control" id="member_search" placeholder="Search By invoice number, supplier" name="member_search">
                                 <div class="row mt-2 p-3" id="member_show_info">
 
@@ -77,7 +76,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header bg-dark">
-          <h5 class="modal-title text-light" id="exampleModalLabel">Search Raw material and set</h5>
+          <h5 class="modal-title text-light" id="exampleModalLabel">Search Raw material stock and set</h5>
           <button type="button" class="close text-light" id="modal_close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -147,17 +146,14 @@ referrerpolicy="no-referrer"></script>
 
 <script>
 
-function setMember(id, supplier_id, invioce_number, type) {
-    var check = $('#supplier_id'+id).val();
+function setMember(id, total_cost, invioce_number, type) {
+    var check = $('#total_cost'+id).val();
     if(check) {
         error("Member is exist.");
     }
     else {
         const cartDom = `
                         <tr id="member_column_`+id+`">
-                            <td>
-                            <input type="text" class="col-md-8" class="form-control m-0"  name="supplier_id[]" oninput="qty(`+id+`)" value="`+supplier_id+`" id="qty`+id+`" >
-                            </td>
                             <td> 
                             <input type="text" class="col-md-10" class="form-control "   name="invioce_number[]" oninput="qty(`+id+`)" value="`+invioce_number+`" id="qty`+id+`" >
                             </td>
@@ -189,9 +185,9 @@ function delete_product(id) {
     success("Member Deleted.");
 }
 
-function setDonerInfo(title, code) {
-    $('#project_name').val(title);
-    $('#project_code').val(code);
+function setDonerInfo(material_id, stock_quantity) {
+    $('#project_name').val(material_id);
+    $('#project_code').val(stock_quantity);
     $('#modal_close').click();
     success("project Info set Successfully.");
 }

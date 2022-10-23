@@ -47,7 +47,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header bg-dark">
-        <h5 class="modal-title text-light" id="exampleModalLabel">Add Doner</h5>
+        <h5 class="modal-title text-light" id="exampleModalLabel">Add Material</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -68,7 +68,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Material Type Unit</label>
-                            <input type="text" class="form-control" name="unit_type" placeholder="Enter material unit type">
+                            <input type="text" class="form-control" name="unit_type" placeholder="Example kg">
                             @error('logo')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

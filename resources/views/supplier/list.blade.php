@@ -9,7 +9,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
-
     <div class="container p-4">
     <div class="row shadow rounded bg-light" style="padding-top:20px">
       <div class="col-md-10">
@@ -31,7 +30,7 @@
               <tr>
                   <th>Supplier Name</th>
                   <th>Phone</th>
-                  <th>Balance</th>
+                  <!-- <th>Balance</th> -->
                   <th>Action</th>
               </tr>
           </thead>
@@ -47,7 +46,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header bg-dark">
-        <h5 class="modal-title text-light" id="exampleModalLabel">Add Doner</h5>
+        <h5 class="modal-title text-light" id="exampleModalLabel">Add Supplier</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -78,7 +77,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><span class="text-danger">*</span>Phone</label>
-                            <input type="text" class="form-control" name="phone" value="" placeholder="+88017542055420"  required>
+                            <input type="number" class="form-control" name="phone" value="" placeholder="+88017542055420"  required>
                             @error('company_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -86,7 +85,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Date</label>
+                            <label for="">Date</label>
                             <input type="date" class="form-control" name="date" >
                             @error('logo')
                                 <span class="text-danger">{{ $message }}</span>
@@ -131,7 +130,7 @@
         columns: [
             {data: 'supplier_name', name: 'supplier_name'},
             {data: 'phone', name: 'phone'},
-            {data: 'balance', name: 'balance'},
+            // {data: 'balance', name: 'balance'},
             {data: 'action', name: 'action'},
         ],
         "scrollY": "300px",

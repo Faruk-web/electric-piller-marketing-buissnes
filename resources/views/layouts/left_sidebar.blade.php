@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 
-                <li class="nav-main-item">
+                <!-- <li class="nav-main-item">
                     <a class="nav-main-link active" href="">
                         <i class="nav-main-link-icon fas fa-plane"></i>
                         <span class="nav-main-link-name"><span class="rounded p-1 ">Flight Type</span></span>
@@ -49,7 +49,7 @@
                         <i class="nav-main-link-icon fa fa-file"></i>
                         <span class="nav-main-link-name"><span class="rounded p-1 ">Report</span></span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                         <i class="nav-main-link-icon fas fa-dollar-sign"></i>

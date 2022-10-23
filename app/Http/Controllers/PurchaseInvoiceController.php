@@ -134,12 +134,10 @@ class PurchaseInvoiceController extends Controller
             $check_raw_materials_stock =RawMaterialStock::where('material_id', $suppliers_id->id)->first();
             foreach($request->quantity as $key => $item) {
             $raw_material_stock =   new RawMaterialStock;
-            // $total_stocks = RawMaterialStock::sum('stock_quantity');
-            // $stock_quantitys = ($total_stocks+$request->quantity[$key]);
             $quantity = $request->quantity[$key];
+            
             if(!is_null($check_raw_materials_stock)) {
                 $db_stock = $check_raw_materials_stock->stock_quantity;
-                dd($db_stock);
                 if($db_stock >= 0 ) {
                     $rests_qty = $db_stock + $quantity ;
                     // dd($rests_qty);

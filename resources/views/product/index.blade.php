@@ -52,7 +52,7 @@
                 <div class="row">
                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Price</label>
+                                <label for="exampleInputEmail1">Salling Price</label>
                                 <input type="number" class="form-control" name="price" >
                                 @error('logo')
                                     <span class="text-danger">{{ $message }}</span>

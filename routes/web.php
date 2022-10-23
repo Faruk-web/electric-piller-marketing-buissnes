@@ -7,6 +7,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseInvoiceController;
 use App\Http\Controllers\ProductInvoiceController;
 use App\Http\Controllers\ProductionToProductController;
+use App\Http\Controllers\ProductionToProductOutPutController;
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -71,6 +72,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search_member', [ProductionToProductController::class, 'search_member']);
     Route::get('/create/search-doner', [ProductionToProductController::class, 'search_doner']);
     Route::post('/production/material/store', [ProductionToProductController::class, 'production_material_store'])->name('production.material.store');
-    Route::get('/submit', [ProductionToProductController::class, 'reqsubmit'])->name('production.material.list');
-     Route::get('/search_product', [ProductionToProductController::class, 'search_product']);
+    Route::get('/production/material', [ProductionToProductController::class, 'productionmaterial'])->name('production.material');
+    Route::get('/production/material/list', [ProductionToProductController::class, 'productionmateriallist'])->name('production.material.list');
+    Route::get('/search_product', [ProductionToProductController::class, 'search_product']);
+    Route::get('/production/material/data', [ProductionToProductController::class, 'production_material_data'])->name('production.material.data');
+
+    //
+    Route::get('/production/to/product', [ProductionToProductOutPutController::class, 'productiontoproduct'])->name('production.product');
+    Route::get('/search/product', [ProductionToProductOutPutController::class, 'productsearch']);
+    Route::get('/search//raw/material', [ProductionToProductOutPutController::class, 'rawmaterialsearch']);
+    Route::post('/production/to/product/store', [ProductionToProductOutPutController::class, 'productiontoproductstore'])->name('production.product.store');
+    Route::get('/production/to/product/list', [ProductionToProductOutPutController::class, 'productiontoproductlist'])->name('production.product.list');
+    Route::get('/production/to/product/data', [ProductionToProductOutPutController::class, 'productiontoproductdata'])->name('production.product.data');
 });

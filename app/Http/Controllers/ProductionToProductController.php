@@ -145,16 +145,16 @@ class ProductionToProductController extends Controller
                         $rests_qty = $db_stock - $quantity;
                         
                         if($rests_qty == 0) {
-                            $check_raw_materials_stock::delete();
+                            $check_raw_materials_stock->delete();
                         }
                         else {
-                            // $check_raw_materials_stock::update();
+                            $check_raw_materials_stock->stock_quantity =$rests_qty;
+                            $check_raw_materials_stock->save();
                         }
                     }
                     $production_materials->save();
-                        return Redirect()->back()->with('success', 'New product invoice Added');
-                    
                 }
+                return redirect('/production/material')->with('success', 'New production material Added');
             }
 
            
@@ -208,8 +208,40 @@ class ProductionToProductController extends Controller
         }
         return Response($output);
     }
-    public function reqsubmit(){
+    public function productionmaterial(){
         return view('invoice.list');
+    }
+    public function productionmateriallist(){
+        return view('invoice.production_materiak_list');
+    }
+    //production_material_data
+    public function production_material_data(Request $request){
+        if ($request->ajax()) {
+            $data = ProductionMaterial::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                })
+                ->addColumn('raw_material_id', function($row){
+                    return optional($row->MaterialInfo)->material_name;
+                })
+                ->addColumn('invioce_number', function($row){
+                    return $row->invioce_number;
+                })
+                ->addColumn('quantity', function($row){
+                    return $row->quantity;
+                })
+                ->addColumn('price', function($row){
+                    return $row->price;
+                })
+                ->addColumn('total_price', function($row){
+                    return $row->total_price;
+                })
+                
+                ->rawColumns(['action', 'raw_material_id', 'invioce_number','quantity','price','total_price'])
+                ->make(true);
+        }
     }
     
 

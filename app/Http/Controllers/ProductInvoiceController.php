@@ -24,7 +24,7 @@ class ProductInvoiceController extends Controller
         $products->unit_type = $request->unit_type;
         $products->created_at = Carbon::now();
         $products->save();
-        return Redirect()->back()->with('success', 'New Product Added.');
+        return Redirect()->route('product.list')->with('success', 'New Product Added.');
     }
      //product invoice create
      public function material_product(){
@@ -77,7 +77,7 @@ class ProductInvoiceController extends Controller
         $purchase_material->product_id	=$product_id->id;
         $purchase_material->save();
     }
-    return back()->with('success','First Purchase Material Successfully Done');
+    return Redirect()->route('material.make.product.list')->with('success','First Purchase Material Successfully Done');
 }
     //product_list
     public function product_list(){
@@ -123,12 +123,11 @@ class ProductInvoiceController extends Controller
                 ->addColumn('action', function($row){
                     return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
                 })
-                
                 ->addColumn('material_id', function($row){
-                    return $row->material_id;
+                    return optional($row->MaterialInfo)->material_name;
                 })
-                ->addColumn('product_id ', function($row){
-                    return $row->product_id ;
+                ->addColumn('product_id', function($row){
+                    return optional($row->ProductInfo)->product_name;
                 })
                 ->addColumn('unit_amount', function($row){
                     return $row->unit_amount;

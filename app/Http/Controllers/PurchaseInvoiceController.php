@@ -75,17 +75,19 @@ class PurchaseInvoiceController extends Controller
         $doner_info = $request->doner_info;
           $doners = Material::where(function ($query) use ($doner_info){
                                 $query->where('unit_type', 'LIKE', '%'. $doner_info. '%')
-                                    ->orWhere('material_name', 'LIKE', '%'. $doner_info. '%');
+                                    ->orWhere('material_name', 'LIKE', '%'. $doner_info. '%')
+                                    ->orWhere('price', 'LIKE', '%'. $doner_info. '%');
                             })
-                            ->get(['material_name', 'unit_type', 'id']);
-
+                            ->get(['material_name', 'unit_type', 'id','price']);
+// dd($doners);
           if(!empty($doner_info)) {
               if(count($doners) > 0) {
                 foreach ($doners as $doner) {
                     $output.='<tr>
                         <td>'.$doner->material_name.'</td>
                         <td>'.$doner->unit_type.'</td>
-                        <td><button type="button" onclick="setDonerInfo(\''.$doner->material_name.'\', \''.$doner->unit_type.'\')" class="btn btn-primary btn-sm btn-rounded">Select</button></td>
+                        <td>'.$doner->price.'</td>
+                        <td><button type="button" onclick="setDonerInfo(\''.$doner->material_name.'\', \''.$doner->unit_type.'\', \''.$doner->price.'\')" class="btn btn-primary btn-sm btn-rounded">Select</button></td>
                         </tr>';
                     }
               }
@@ -131,22 +133,36 @@ class PurchaseInvoiceController extends Controller
             // dd($request);
             $suppliers_id=Supplier::where('supplier_name',$request->supplier_name)->first();
             $material_id=Material::Where('material_name',$request->material_id)->first();
+            //   dd($material_id);
             $check_raw_materials_stock =RawMaterialStock::where('material_id', $suppliers_id->id)->first();
             foreach($request->quantity as $key => $item) {
-            $raw_material_stock =   new RawMaterialStock;
-            $quantity = $request->quantity[$key];
-            
-            if(!is_null($check_raw_materials_stock)) {
-                $db_stock = $check_raw_materials_stock->stock_quantity;
-                if($db_stock >= 0 ) {
-                    $rests_qty = $db_stock + $quantity ;
-                    // dd($rests_qty);
+                
+                $raw_material_stock =   new RawMaterialStock;
+                $quantity = $request->quantity[$key];
+                
+                if(!is_null($check_raw_materials_stock)) {
+                    $db_stock = $check_raw_materials_stock->stock_quantity;
+                    if($db_stock >= 0 ) {
+                        $rests_qty = $db_stock + $quantity ;
+                        // dd($rests_qty);
+                    }
                 }
-             }
-            $raw_material_stock->material_id	=$material_id->id;
-            $raw_material_stock->stock_quantity=$rests_qty ;
-            $raw_material_stock->date	=$request->date;
-            $raw_material_stock->save();
+                $raw_material_stock->material_id	=$material_id->id;
+                $raw_material_stock->stock_quantity=$rests_qty ;
+
+                $raw_material_stock->date	=$request->date;
+
+                // $rests_qty = $db_stock - $quantity;
+                            
+                if($rests_qty == 0) {
+                    $check_raw_materials_stock->delete();
+                }
+                else {
+                    $check_raw_materials_stock->stock_quantity =$rests_qty;
+                    $check_raw_materials_stock->save();
+                }
+
+                $raw_material_stock->save();
         }
             $supplier_id=Supplier::where('supplier_name',$request->supplier_name)->first();
             $total_invoice = PurchaseInvoice::count('id');
@@ -176,7 +192,7 @@ class PurchaseInvoiceController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">View</a>';
                 })
                 ->addColumn('supplier_name', function($row){
                     return optional($row->senderSupplierInfo)->supplier_name;
@@ -212,11 +228,15 @@ class PurchaseInvoiceController extends Controller
                 ->addColumn('price', function($row){
                     return $row->price;
                 })
+                ->addColumn('quantity', function($row){
+                    return $row->quantity;
+                })
+                
                 ->addColumn('total_price', function($row){
                     return $row->total_price;
                 })
                 
-                ->rawColumns(['action', 'invioce_number', 'price','total_price'])
+                ->rawColumns(['action', 'invioce_number', 'price','total_price','quantity'])
                 ->make(true);
         }
     

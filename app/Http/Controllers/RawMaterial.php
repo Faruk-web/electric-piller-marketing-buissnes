@@ -4,14 +4,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Models\User;
+use App\Models\RawMaterialStock;
 use DataTables;
 use Illuminate\Support\Carbon;
 class RawMaterial extends Controller
 {
     //raw material
-    public function rawmaterial(){
-        return view('material.index');
+    public function rawmateriallistedit($id){
+        $materials=Material::find($id);
+        return view('material.index',compact('materials'));
     }
+     //rawmaterial_update
+     public function rawmaterial_update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'material_name' => 'required',
+            'material_name' => 'price',
+        ]);
+        $material =Material::find($id);
+        $material->material_name = $request->material_name;
+        $material->unit_type = $request->unit_type;
+        $material->price = $request->price;
+        $material->note = $request->note;
+        $material->created_at = Carbon::now();
+        $material->update();
+        return redirect()->route('raw.material.list')->with('status','Material Updated Successfully');
+    }
+
+    
     //rawmateriallist
      public function rawmateriallist(){
         return view('material.list');
@@ -23,7 +43,7 @@ class RawMaterial extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a>';
+                    return '<a href="'.route('raw.material.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded" >Edit</a>';
                 })
                 
                 ->addColumn('material_name', function($row){
@@ -44,6 +64,11 @@ class RawMaterial extends Controller
     public function rawmaterialstore(Request $request)
     
     {
+        $validated = $request->validate([
+            'material_name' => 'required',
+            'material_name' => 'price',
+        ]);
+
         $material = new Material;
         $material->material_name = $request->material_name;
         $material->unit_type = $request->unit_type;
@@ -53,4 +78,30 @@ class RawMaterial extends Controller
         $material->save();
         return Redirect()->back()->with('success', 'New material Added.');
     }
+
+        //materialstock
+        public function materialstock(){
+            return view('material.stock');
+        }
+         //list
+       public function materialstockdata(Request $request){
+        if ($request->ajax()) {
+            $data = RawMaterialStock::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    return '<a href="'.route('raw.material.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded" >Edit</a>';
+                })
+                ->addColumn('material_id', function($row){
+                    return optional($row->MaterialInfo)->material_name;
+                })
+                ->addColumn('stock_quantity', function($row){
+                    return $row->stock_quantity;
+                })
+                ->rawColumns(['action', 'material_id', 'stock_quantity'])
+                ->make(true);
+        }
+      
+    }
+
 }

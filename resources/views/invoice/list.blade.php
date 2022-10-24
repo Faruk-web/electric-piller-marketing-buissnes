@@ -107,7 +107,7 @@ referrerpolicy="no-referrer"></script>
 
 <script>
 
-function setMember(id, name, phone, type) {
+function setMember(id, name, price, type) {
     var check = $('#product_id_'+id).val();
     if(check) {
         error("Products is exist.");
@@ -115,10 +115,12 @@ function setMember(id, name, phone, type) {
     else {
         const cartDom = `
             <tr id="product_column_`+id+`">
-            <td><input type="text" name="raw_material_id[]" id="product_id_`+id+`" value="`+name+`">
-            <td><input type="hidden" name="invioce_number[]" id="product_id_`+id+`" value="`+id+`">
-            <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" ></td>
-           <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="" id="price`+id+`" ></td>
+           
+            <td> <input type="text" class="form-control name="material_id[]" id="product_id_`+id+`" value="`+name+`" readonly>
+            <td><input type="hidden" name="material_id[]" id="product_id_`+id+`" value="`+name+`">
+            <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
+            </td>
+           <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="`+price+`" id="price`+id+`" ></td>
            <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" ></td>
            <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
             </tr>

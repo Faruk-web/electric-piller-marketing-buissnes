@@ -123,9 +123,9 @@ class ProductionToProductController extends Controller
         $update_count = $total_invoice + 1;
         $invoice_number = "P".rand(1000, 9999).$update_count;
         $total_cost = 0;
-            foreach($request->raw_material_id as $key => $item) { 
+            foreach($request->material_id as $key => $item) { 
                 $quantity = $request->quantity[$key];
-                $material_id = $request->raw_material_id[$key];
+                $material_id = $request->material_id[$key];
                 $price = $request->price[$key];
                 $raw_materials_stock =Material::where('material_name', $material_id)->first(); 
                 $check_raw_materials_stock =RawMaterialStock::where('material_id', $raw_materials_stock->id)->first();
@@ -170,7 +170,7 @@ class ProductionToProductController extends Controller
     
                             })
                             ->limit(10)
-                            ->get(['material_name', 'unit_type', 'id']);
+                            ->get(['material_name','price', 'unit_type', 'id']);
     
           if(!empty($product_info)) {
               if(count($products) > 0) {
@@ -178,7 +178,7 @@ class ProductionToProductController extends Controller
                 <thead>
                     <tr>
                         <th scope="col">material_name</th>
-                        <th scope="col">Unit Type</th>
+                        <th scope="col">price</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -191,9 +191,9 @@ class ProductionToProductController extends Controller
                     </td>'.
                     '<td>
     
-                 ' .$product->unit_type.'
+                 ' .$product->price.'
                     </td>'.
-                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->material_name.'\', \''.$product->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
+                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->material_name.'\', \''.$product->price.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
     
                         '</tr>';
                     }

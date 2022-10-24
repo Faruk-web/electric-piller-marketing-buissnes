@@ -6,13 +6,13 @@
         <div class="col-sm-12 col-xl-12 col-md-12">
             <div class="block block-rounded d-flex flex-column">
                 <div class="block-content block-content-full justify-content-between align-items-center">
-                <form method="POST" action="{{route('supplier.store')}}" enctype="multipart/form-data">
+                <form method="POST" action="{{url('/supplier/list/update/'.$suppliers->id)}}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><span class="text-danger">*</span>Supplier Name</label>
-                            <input type="text" class="form-control" name="supplier_name" value="" placeholder="supplier name" required>
+                            <input type="text" class="form-control" name="supplier_name" value="{{$suppliers->supplier_name}}" placeholder="supplier name" required>
                             @error('company_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -21,7 +21,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email</label>
-                            <input type="email" class="form-control" name="email" placeholder="Enter email">
+                            <input type="email" class="form-control" value="{{$suppliers->email}}" name="email" placeholder="Enter email">
                             @error('logo')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><span class="text-danger">*</span>Phone</label>
-                            <input type="text" class="form-control" name="phone" value="" placeholder="+88017542055420"  required>
+                            <input type="text" class="form-control" name="phone" value="{{$suppliers->phone}}" placeholder="+88017542055420"  required>
                             @error('company_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Date</label>
-                            <input type="date" class="form-control" name="date" >
+                            <input type="date" class="form-control" name="date" value="{{$suppliers->date}}" >
                             @error('logo')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -53,7 +53,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Note</label>
-                            <textarea class="form-control" name="note" cols="30" rows="5"></textarea>
+                            <textarea class="form-control" name="note" cols="30" rows="5" value="{{$suppliers->note}}"></textarea>
                             @error('address')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

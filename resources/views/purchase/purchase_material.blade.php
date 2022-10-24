@@ -52,12 +52,12 @@
                             </div>
                             <label for="">Date</label>
                             <input type="date" name="date" class="form-control" id="all_total">
-                        <div class="" style="padding-top:10px">
-                            <div class="form-group text-right">
-                             <button type="submit" class="btn btn-success">Update</button>
+                            <div class="" style="padding-top:10px">
+                                <div class="form-group text-right">
+                                <button type="submit" class="btn btn-success">Update</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                       </div>
                          </div>
                        <div class="col-md-4 p-1">
                             
@@ -162,7 +162,7 @@ referrerpolicy="no-referrer"></script>
 
 <script>
 
-function setMember(id, name, phone, type) {
+function setMember(id, name,type, price) {
     var check = $('#material_id'+id).val();
     if(check) {
         error("Products is exist.");
@@ -170,12 +170,13 @@ function setMember(id, name, phone, type) {
     else {
         const cartDom = `
             <tr id="product_column_`+id+`">
-            <td><input type="text" class="col-md-12" name="material_id[]" id="product_id_`+id+`" value="`+name+`">
-            <td><input type="hidden" name="invioce_number[]" id="product_id_`+id+`" value="`+id+`">
+           
+            <td><input type="text" class="form-control name="material_id[]" id="product_id_`+id+`" value="`+name+`" readonly>
+            <td><input type="hidden" name="material_id[]" id="product_id_`+id+`" value="`+name+`">
             <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" ></td>
-           <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="" id="price`+id+`" ></td>
-           <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" ></td>
-           <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
+            <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="`+price+`" id="price`+id+`" ></td>
+            <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" ></td>
+            <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
             </tr>
             `;
 

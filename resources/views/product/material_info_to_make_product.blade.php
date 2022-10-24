@@ -2,7 +2,7 @@
 @section('body_content')
 <div class="content">
     <div class="row">
-        <div class="col-md-8"><h4>Material To Make Product</h4></div>
+        <div class="col-md-8"><h4>Materials for {{$product_info->product_name}} To Make</h4></div>
         <div class="col-md-2"></div>
         <div class="col-sm-12 col-xl-12 col-md-12">
             <div class="block block-rounded d-flex flex-column">
@@ -12,34 +12,32 @@
                 <div class="row">
                     <div class="col-md-8 p-1">
                         <div class="shadow rounded p-2 mb-4">
-                            <h4 class="fw-bold">Set Product Info or <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal" style="cursor: grab;">Search Prodcut</span></h4>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input-alt"><span class="text-danger">*</span>Product Name</label>
-                                        <input type="text" class="form-control" name="product_id" id="project_name" value="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input-alt"><span class="text-danger">*</span>Date</label>
-                                        <input type="date" class="form-control" maxlength="11" minlength="11" name="date" value="" required="">
-                                    </div>
-                                </div>
                                <div class="col-md-12">
                                     <div class="form-group">
-                                    <h4 class="m-0">Material info make product =></h4>
                                    <div id="selected_members" class="row p-3">
-                                    <table class="table">
-                                        <thead>
+                                    <table class="table table-bordered">
+                                        <thead class="bg-dark text-light">
                                             <tr>
-                                                <th> Material Name</th>
-                                                <th> Unit Amount</th>
+                                                <th> Material Info</th>
+                                                <th> Unit</th>
                                                 <th> Price</th>
                                                 <th> Total price</th>
-                                                
                                             </tr>
                                         </thead>
+                                        <tbody id="tbody_output">
+                                            @foreach($materials_info as $material)
+                                            <tr>
+                                                <td>
+                                                    {{$material->MaterialInfo->material_name}}
+                                                    <input type="hidden" name="material_id" id="material_id_{{$material->MaterialInfo->id}}" value="{{$material->MaterialInfo->id}}" >
+                                                </th>
+                                                <td><input class="form-control" type="number" name="unit_amount" id="" value="{{$material->unit_amount}}" step=any></td>
+                                                <td><input class="form-control" type="number" name="price" id="" value="{{$material->price}}" step=any></td>
+                                                <td><input class="form-control" type="number" name="total_price" id="" value="{{$material->total_price}}" step=any></td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -77,42 +75,6 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-dark">
-          <h5 class="modal-title text-light" id="exampleModalLabel">Search product and set</h5>
-          <button type="button" class="close text-light" id="modal_close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <div class="form-group shadow rounded p-1">
-                        <input type="text" class="form-control" id="project_search"
-                            placeholder="Search by product info (Name, Unit Type)" name="company_name">
-                    </div>
-                </div>
-                <div class="col-md-3 text-center">
-
-                </div>
-                <div class="col-md-12">
-                    <div class="pl-1 pr-1 pb-2">
-                        <div class="card-body shadow rounded">
-                            <table class="table table-bootstrap">
-                                <tbody id="project_show_info"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"
 referrerpolicy="no-referrer"></script>
 <script>
@@ -153,27 +115,22 @@ referrerpolicy="no-referrer"></script>
 <script>
 
 function setMember(id, material_name, price) {
-    var check = $('#product_id'+id).val();
+    var check = $('#material_id_'+id).val();
     if(check) {
         error("Member is exist.");
     }
     else {
-        const cartDom = `
-                        <tr id="product_column_`+id+`">
-                            <td><input type="text" class="form-control" name="material_name[]" id="product_id_`+id+`" value="`+material_name+`" readonly>
-                            <td><input type="hidden" name="invioce_number[]" id="product_id_`+id+`" value="`+id+`">
-                            <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" ></td>
-                            <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="`+price+`" id="price`+id+`" ></td>
-                            <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" ></td>
-                            <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
-                        </tr>
+        const cartDom = `<tr>
+                            <td>
+                                `+material_name+`
+                                <input type="hidden" name="material_id" id="material_id_`+id+`" value="`+id+`" >
+                            </th>
+                            <td><input class="form-control" type="number" name="unit_amount" id="" value="" step=any></td>
+                            <td><input class="form-control" type="number" name="price" id="" value="`+price+`" step=any></td>
+                            <td><input class="form-control" readonly type="number" name="total_price" id="" value="" step=any></td>
+                        </tr>`;
 
-                        `;
-
-        $('#selected_members').append(cartDom);
-        $('#member_show_info').html('');
-        $('#member_search').val('');
-        success("Member Added.");
+        $('#tbody_output').append(cartDom);
     }
 }
 

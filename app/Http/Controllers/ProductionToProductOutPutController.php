@@ -71,7 +71,7 @@ class ProductionToProductOutPutController extends Controller
     
                             })
                             ->limit(10)
-                            ->get(['material_name', 'unit_type', 'id']);
+                            ->get(['material_name', 'unit_type','price', 'id']);
     
           if(!empty($product_info)) {
               if(count($products) > 0) {
@@ -79,7 +79,7 @@ class ProductionToProductOutPutController extends Controller
                 <thead>
                     <tr>
                         <th scope="col">material_name</th>
-                        <th scope="col">Unit Type</th>
+                        <th scope="col">price</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -90,11 +90,15 @@ class ProductionToProductOutPutController extends Controller
                     '<td>
                  ' .$product->material_name.'
                     </td>'.
+                //     '<td>
+    
+                //  ' .$product->unit_type.'
+                //     </td>'.
                     '<td>
     
-                 ' .$product->unit_type.'
+                 ' .$product->price.'
                     </td>'.
-                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->material_name.'\', \''.$product->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
+                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->material_name.'\', \''.$product->unit_type.'\',\''.$product->price.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
     
                         '</tr>';
                     }
@@ -169,6 +173,30 @@ class ProductionToProductOutPutController extends Controller
                 })
                 
                 ->rawColumns(['action', 'product_id', 'invioce_number','quantity','product_cost','total_production'])
+                ->make(true);
+        }
+    }
+
+    //productstock
+    public function productstock(){
+        return view('production.stock');
+    }
+    public function productstockdata(Request $request){
+        if ($request->ajax()) {
+            $data = ProductStock::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                })
+                ->addColumn('product_id', function($row){
+                    return optional($row->ProductInfo)->product_name;
+                })
+                ->addColumn('stock_quantity', function($row){
+                    return $row->stock_quantity;
+                })
+                
+                ->rawColumns(['action', 'product_id', 'stock_quantity'])
                 ->make(true);
         }
     }

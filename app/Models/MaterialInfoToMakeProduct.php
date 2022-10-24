@@ -11,7 +11,9 @@ class MaterialInfoToMakeProduct extends Model
     public function MaterialInfo() {
         return $this->belongsTo(Material::class, 'material_id','id');
     }
+
     public function ProductInfo() {
         return $this->belongsTo(Product::class, 'product_id','id');
     }
+    
 }

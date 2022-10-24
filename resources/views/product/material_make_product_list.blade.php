@@ -30,8 +30,8 @@
         <table class="table table-bordered data-table display nowrap">
           <thead>
               <tr>
-                  <th>material_id</th>
-                  <th>product_id</th>
+                  <th>Material Name</th>
+                  <th>Product Name</th>
                   <th>unit_amount</th>
                   <th>Price</th>
                   <th>Action</th>

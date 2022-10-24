@@ -2,7 +2,7 @@
 @section('body_content')
 <div class="content">
     <div class="row">
-        <div class="col-md-8"><h4>Create New Purchase</h4></div>
+        <div class="col-md-8"><h4>Create Purchase Invoice</h4></div>
         <div class="col-md-2"></div>
         <div class="col-sm-12 col-xl-12 col-md-12">
             <div class="block block-rounded d-flex flex-column">

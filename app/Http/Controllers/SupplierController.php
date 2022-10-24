@@ -8,8 +8,9 @@ use DataTables;
 class SupplierController extends Controller
 {
     //supplier create
-    public function index(){
-        return view('supplier.index');
+    public function list_edit($id){
+        $suppliers=Supplier::find($id);
+        return view('supplier.index',compact('suppliers'));
     }
     //list
     public function list(){
@@ -22,7 +23,7 @@ class SupplierController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a>';
+                    return '<a href="'.route('supplier.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a>';
                 })
                 
                 ->addColumn('supplier_name', function($row){
@@ -50,5 +51,16 @@ class SupplierController extends Controller
         $suppliers->created_at = Carbon::now();
         $suppliers->save();
         return Redirect()->back()->with('success', 'New supplier Added.');
+    }
+    public function list_update(Request $request,$id){
+        $suppliers = Supplier::find($id);
+        $suppliers->supplier_name = $request->supplier_name;
+        $suppliers->email = $request->email;
+        $suppliers->phone = $request->phone;
+        $suppliers->date = $request->date;
+        $suppliers->note = $request->note;
+        $suppliers->created_at = Carbon::now();
+        $suppliers->update();
+        return Redirect()->route('supplier.list')->with('success', 'supplier update Successfully.');
     }
 }

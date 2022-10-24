@@ -31,6 +31,7 @@
           <thead>
               <tr>
                   <th>Invoice Number</th>
+                  <th>Quantity</th>
                   <th>Price</th>
                   <th >Total Price</th>
                   <th>Action</th>
@@ -121,6 +122,7 @@
         ajax: "{{ route('purchase.material.data') }}",
         columns: [
             {data: 'invioce_number', name: 'invioce_number'},
+            {data: 'quantity', name: 'quantity'},
             {data: 'price', name: 'price'},
             {data: 'total_price', name: 'total_price'},
             {data: 'action', name: 'action'},

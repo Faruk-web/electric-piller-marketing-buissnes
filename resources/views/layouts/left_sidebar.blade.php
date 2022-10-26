@@ -121,11 +121,11 @@
                                 <span class="nav-main-link-name">Purcharse Material List</span>
                             </a>
                         </li>
-                        <li class="nav-main-item">
+                        <!-- <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('purchase.invoice')}}">
                                 <span class="nav-main-link-name">Purcharse Invoice</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('purchase.invoice.list')}}">
                                 <span class="nav-main-link-name">Purcharse Invoice List</span>
@@ -167,9 +167,14 @@
                         <span class="nav-main-link-name">Product Invoice</span>
                     </a>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
+                        <!-- <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('production.material')}}">
                                 <span class="nav-main-link-name">Production Material</span>
+                            </a>
+                        </li> -->
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('invoice.create')}}">
+                                <span class="nav-main-link-name">Invoice List</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
@@ -177,11 +182,7 @@
                                 <span class="nav-main-link-name">Production Material List</span>
                             </a>
                         </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('invoice.create')}}">
-                                <span class="nav-main-link-name">Invoice List</span>
-                            </a>
-                        </li>
+                       
                         <!-- <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('production.material.create')}}">
                                 <span class="nav-main-link-name">Production Material List2</span>
@@ -193,7 +194,7 @@
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                        <i class="nav-main-link-icon fas fa-money-check text-light"></i>
-                        <span class="nav-main-link-name">Production To Product</span>
+                        <span class="nav-main-link-name">Production</span>
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">

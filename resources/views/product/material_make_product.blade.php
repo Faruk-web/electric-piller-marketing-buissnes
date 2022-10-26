@@ -12,9 +12,9 @@
                 <div class="row">
                     <div class="col-md-8 p-1">
                         <div class="shadow rounded p-2 mb-4">
-                            <h4 class="fw-bold">Set Product Info or <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal" style="cursor: grab;">Search Prodcut</span></h4>
+                            <!-- <h4 class="fw-bold">Set Product Info or <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal" style="cursor: grab;">Search Prodcut</span></h4> -->
                             <div class="row">
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input-alt"><span class="text-danger">*</span>Product Name</label>
                                         <input type="text" class="form-control" name="product_id" id="project_name" value="">
@@ -25,7 +25,7 @@
                                         <label for="example-text-input-alt"><span class="text-danger">*</span>Date</label>
                                         <input type="date" class="form-control" maxlength="11" minlength="11" name="date" value="" required="">
                                     </div>
-                                </div>
+                                </div> -->
                                <div class="col-md-12">
                                     <div class="form-group">
                                     <h4 class="m-0">Material info make product =></h4>
@@ -46,7 +46,7 @@
                             
                                 <div class="col-md-4">
                                     <label for="">Total Tk:</label>
-                                    <input type="text" class="form-control" id="all_total">
+                                    <input type="text" class="form-control" id="all_total" readonly>
                                 </div>
                       
                         </div>
@@ -164,7 +164,7 @@ function setMember(id, material_name, price) {
                             <td><input type="hidden" name="invioce_number[]" id="product_id_`+id+`" value="`+id+`">
                             <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" ></td>
                             <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="`+price+`" id="price`+id+`" ></td>
-                            <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" ></td>
+                            <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" readonly></td>
                             <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
                         </tr>
 

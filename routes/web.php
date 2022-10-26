@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/product/invoice/create', [ProductionToProductController::class, 'create'])->name('invoice.create');
     Route::post('/product/invoice/store', [ProductionToProductController::class, 'invoicestore'])->name('invoice.store');
     Route::get('/product/invoice/list/data', [ProductionToProductController::class, 'invoicelistdata'])->name('invoice.list.data');
+    Route::get('/product/invoice/list/edit/{id}', [ProductionToProductController::class, 'invoicelistedit'])->name('invoice.list.edit');
     Route::get('/production/material/create', [ProductionToProductController::class, 'production_material'])->name('production.material.create');
     Route::get('/search_member', [ProductionToProductController::class, 'search_member']);
     Route::get('/create/search-doner', [ProductionToProductController::class, 'search_doner']);

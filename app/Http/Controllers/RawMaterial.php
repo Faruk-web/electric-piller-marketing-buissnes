@@ -17,10 +17,6 @@ class RawMaterial extends Controller
      //rawmaterial_update
      public function rawmaterial_update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'material_name' => 'required',
-            'material_name' => 'price',
-        ]);
         $material =Material::find($id);
         $material->material_name = $request->material_name;
         $material->unit_type = $request->unit_type;
@@ -64,11 +60,6 @@ class RawMaterial extends Controller
     public function rawmaterialstore(Request $request)
     
     {
-        $validated = $request->validate([
-            'material_name' => 'required',
-            'material_name' => 'price',
-        ]);
-
         $material = new Material;
         $material->material_name = $request->material_name;
         $material->unit_type = $request->unit_type;
@@ -95,10 +86,16 @@ class RawMaterial extends Controller
                 ->addColumn('material_id', function($row){
                     return optional($row->MaterialInfo)->material_name;
                 })
+                ->addColumn('unit_type', function($row){
+                    return optional($row->MaterialInfo)->unit_type;
+                })
+                ->addColumn('price', function($row){
+                    return optional($row->MaterialInfo)->price;
+                })
                 ->addColumn('stock_quantity', function($row){
                     return $row->stock_quantity;
                 })
-                ->rawColumns(['action', 'material_id', 'stock_quantity'])
+                ->rawColumns(['action', 'material_id', 'stock_quantity','unit_type','price'])
                 ->make(true);
         }
       

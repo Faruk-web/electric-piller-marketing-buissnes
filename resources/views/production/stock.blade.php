@@ -13,7 +13,7 @@
     <div class="container p-4">
     <div class="row shadow rounded bg-light" style="padding-top:20px">
       <div class="col-md-10">
-      <h2>Material Stock</h2>
+      <h2>Product Stock</h2>
       </div>
       <div class="col-md-2 text-right">
         <a style="font-size: 13px;" href="" class="btn btn-primary btn-rounded">Purchase Material</a>
@@ -31,8 +31,10 @@
           <thead>
               <tr>
                   <th>Product Name</th>
+                  <th>Unit Type</th>
+                  <th>Size</th>
                   <th>Stock Quantity</th>
-                  <th>Action</th>
+                  <!-- <th>Action</th> -->
               </tr>
           </thead>
           <tbody>
@@ -120,8 +122,10 @@
         ajax: "{{ route('production.product.stock.data') }}",
         columns: [
             {data: 'product_id', name: 'product_id'},
+            {data: 'unit_type', name: 'unit_type'},
+            {data: 'size', name: 'size'},
             {data: 'stock_quantity', name: 'stock_quantity'},
-            {data: 'action', name: 'action'},
+            // {data: 'action', name: 'action'},
         ],
         "scrollY": "300px",
         "pageLength": 50,

@@ -32,14 +32,26 @@
                             <div class="col-md-8"></div>
                                 <div class="col-md-4">
                                     <label for="">Total Tk:</label>
-                                    <input type="text" class="form-control" id="all_total">
+                                    <input type="hidden" class="form-control" name="invioce_number" value="{{$invoices_info->invioce_number}}">
+                                    <input type="text" class="form-control" id="all_total" readonly>
                                 </div>
                             </div>
                             <label for="">Date</label>
                             <input type="date" name="date" class="form-control" id="all_total">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Note</label>
+                                        <textarea class="form-control" name="note" cols="30" rows="5" value=""></textarea>
+                                        @error('address')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
                         <div class="" style="padding-top:10px">
                             <div class="form-group text-right">
-                             <button type="submit" class="btn btn-success">Update</button>
+                             <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -121,7 +133,7 @@ function setMember(id, name, price, type) {
             <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
             </td>
            <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="`+price+`" id="price`+id+`" ></td>
-           <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" ></td>
+           <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" readonly></td>
            <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
             </tr>
 

@@ -14,6 +14,11 @@ class ProductionToProductController extends Controller
     public function create(){
         return view('invoice.create');
     }
+    //invoice create
+    public function invoicelistedit($id){
+       $invoices_info=ProductInvoice::find($id);
+        return view('invoice.list',compact('invoices_info'));
+    }
     //invoicestore
     public function invoicestore(Request $request){
         // dd($request);
@@ -37,7 +42,7 @@ class ProductionToProductController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" target="_blank"  class="btn btn-success btn-sm btn-rounded">View</a>';
+                    return '<a href="'.route('invoice.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Production Material</a>';
                 })
                 
                 ->addColumn('invioce_number', function($row){
@@ -137,7 +142,7 @@ class ProductionToProductController extends Controller
                         $total_price = $quantity * $price;
                         $production_materials = new ProductionMaterial;
                         $production_materials->raw_material_id = $raw_materials_stock->id;
-                        $production_materials->invioce_number = $invoice_number;
+                        $production_materials->invioce_number = $request->invioce_number;
                         $production_materials->total_price = $total_price;  
                         $production_materials->quantity = $quantity; 
                         $production_materials->price = $price; 
@@ -154,7 +159,8 @@ class ProductionToProductController extends Controller
                     }
                     $production_materials->save();
                 }
-                return redirect('/production/material')->with('success', 'New production material Added');
+                // return redirect('invoice.create')->with('success', 'New production material Added');
+                return Redirect()->route('production.material.list')->with('success', 'New production material Added');
             }
 
            

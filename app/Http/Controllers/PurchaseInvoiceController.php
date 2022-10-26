@@ -52,8 +52,9 @@ class PurchaseInvoiceController extends Controller
         ]);
         $supplier_id = Supplier::where('supplier_name', $request->supplier_name)->first('id');
         $project = new PurchaseInvoice;
-        $total_projects = PurchaseInvoice::count('id');
-        $invioce_number = 'S121'.($total_projects+1);
+        $total_invoice = PurchaseInvoice::count('id');
+        $update_count = $total_invoice + 1;
+        $invioce_number = "S".rand(1000, 9999).$update_count;
         $project->supplier_id = $supplier_id->id;
         $project->invioce_number = $invioce_number;
         $project->date = $request->date;
@@ -79,7 +80,6 @@ class PurchaseInvoiceController extends Controller
                                     ->orWhere('price', 'LIKE', '%'. $doner_info. '%');
                             })
                             ->get(['material_name', 'unit_type', 'id','price']);
-// dd($doners);
           if(!empty($doner_info)) {
               if(count($doners) > 0) {
                 foreach ($doners as $doner) {
@@ -132,37 +132,26 @@ class PurchaseInvoiceController extends Controller
         public function purchase_material_submite(Request $request){
             // dd($request);
             $suppliers_id=Supplier::where('supplier_name',$request->supplier_name)->first();
-            $material_id=Material::Where('material_name',$request->material_id)->first();
-            //   dd($material_id);
-            $check_raw_materials_stock =RawMaterialStock::where('material_id', $suppliers_id->id)->first();
+            $material_info=Material::Where('material_name',$request->material_id)->first();
             foreach($request->quantity as $key => $item) {
-                
-                $raw_material_stock =   new RawMaterialStock;
+                $check_raw_materials_stock =RawMaterialStock::where('material_id', $material_info->id)->first();
                 $quantity = $request->quantity[$key];
-                
                 if(!is_null($check_raw_materials_stock)) {
                     $db_stock = $check_raw_materials_stock->stock_quantity;
-                    if($db_stock >= 0 ) {
-                        $rests_qty = $db_stock + $quantity ;
-                        // dd($rests_qty);
-                    }
-                }
-                $raw_material_stock->material_id	=$material_id->id;
-                $raw_material_stock->stock_quantity=$rests_qty ;
+                    $rests_qty = $db_stock + $quantity ;
+                            $check_raw_materials_stock->stock_quantity =$rests_qty;
+                            $check_raw_materials_stock->save();
+                        }
+                        else {
+                            $raw_material_stock =   new RawMaterialStock;
+                            $raw_material_stock->material_id	=$material_info->id;
+                            $raw_material_stock->stock_quantity=$quantity ; 
+                            $raw_material_stock->date	=$request->date;
+                            $raw_material_stock->save();
+                        }
 
-                $raw_material_stock->date	=$request->date;
-
-                // $rests_qty = $db_stock - $quantity;
-                            
-                if($rests_qty == 0) {
-                    $check_raw_materials_stock->delete();
-                }
-                else {
-                    $check_raw_materials_stock->stock_quantity =$rests_qty;
-                    $check_raw_materials_stock->save();
-                }
-
-                $raw_material_stock->save();
+               
+                
         }
             $supplier_id=Supplier::where('supplier_name',$request->supplier_name)->first();
             $total_invoice = PurchaseInvoice::count('id');
@@ -175,10 +164,19 @@ class PurchaseInvoiceController extends Controller
             $purchase_material->price	=$request->price[$key];
             $purchase_material->total_price	=$request->total_price[$key];
             $purchase_material->date	=$request->date;
-            $purchase_material->material_id	=$material_id->id;
+            $purchase_material->material_id	=$material_info->id;
             $purchase_material->supplier_id	=$supplier_id->id;
             $purchase_material->save();
         }
+            foreach($request->quantity as $key => $item) {
+                $purchase_invoice=new PurchaseInvoice;
+                $purchase_invoice->invioce_number	=$invoice_number;
+                // $purchase_invoice->quantity	=$request->quantity[$key];
+                $purchase_invoice->total_gross	=$request->total_price[$key];
+                $purchase_invoice->date	=$request->date;
+                $purchase_invoice->supplier_id	=$supplier_id->id;
+                $purchase_invoice->save();
+            }
         return Redirect()->route('purchase.material.list')->with('success','First Purchase Material Successfully Done');
     }
     //Invoice_list

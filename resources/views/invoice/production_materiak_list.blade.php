@@ -13,11 +13,11 @@
     <div class="container p-4">
     <div class="row shadow rounded bg-light" style="padding-top:20px">
       <div class="col-md-10">
-      <h2>Product Invoice List</h2>
+      <h2>Production Material List</h2>
       </div>
       <div class="col-md-2 text-right">
       
-        <a href="{{route('production.material')}}" class="btn btn-primary btn-rounded" style="font-size:12px">Production Material</a>
+        <!-- <a href="{{route('production.material')}}" class="btn btn-primary btn-rounded" style="font-size:12px">Production Material</a> -->
           <!-- <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#exampleModal" style="font-size:14px">Product Invoice</button> -->
       </div>
       <div class="row">

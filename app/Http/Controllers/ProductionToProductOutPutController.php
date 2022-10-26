@@ -192,11 +192,17 @@ class ProductionToProductOutPutController extends Controller
                 ->addColumn('product_id', function($row){
                     return optional($row->ProductInfo)->product_name;
                 })
+                ->addColumn('unit_type', function($row){
+                    return optional($row->ProductInfo)->unit_type;
+                })
+                ->addColumn('size', function($row){
+                    return optional($row->ProductInfo)->size;
+                })
                 ->addColumn('stock_quantity', function($row){
                     return $row->stock_quantity;
                 })
                 
-                ->rawColumns(['action', 'product_id', 'stock_quantity'])
+                ->rawColumns(['action', 'product_id', 'stock_quantity','unit_type','size'])
                 ->make(true);
         }
     }

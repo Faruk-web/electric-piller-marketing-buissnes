@@ -13,7 +13,7 @@
     <div class="container p-4">
     <div class="row shadow rounded bg-light" style="padding-top:20px">
       <div class="col-md-10">
-      <h2>Product Invoice List</h2>
+      <h2>Product To Product Output List</h2>
       </div>
       <div class="col-md-2 text-right">
       

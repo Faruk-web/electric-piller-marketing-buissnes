@@ -31,8 +31,10 @@
           <thead>
               <tr>
                   <th>Material Name</th>
+                  <th>Unit Type</th>
+                  <th>Price</th>
                   <th>Stock Quantity</th>
-                  <th>Action</th>
+                  <!-- <th>Action</th> -->
               </tr>
           </thead>
           <tbody>
@@ -120,8 +122,10 @@
         ajax: "{{ route('material.stock.data') }}",
         columns: [
             {data: 'material_id', name: 'material_id'},
+            {data: 'unit_type', name: 'unit_type'},
+            {data: 'price', name: 'price'},
             {data: 'stock_quantity', name: 'stock_quantity'},
-            {data: 'action', name: 'action'},
+            // {data: 'action', name: 'action'},
         ],
         "scrollY": "300px",
         "pageLength": 50,

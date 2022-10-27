@@ -42,7 +42,7 @@ class ProductionToProductController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('invoice.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">Production Material</a>';
+                    return '<a href="'.route('invoice.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">edit</a>';
                 })
                 
                 ->addColumn('invioce_number', function($row){
@@ -128,6 +128,17 @@ class ProductionToProductController extends Controller
         $update_count = $total_invoice + 1;
         $invoice_number = "P".rand(1000, 9999).$update_count;
         $total_cost = 0;
+        foreach($request->material_id as $key => $item) {
+            $product_invoice = new ProductInvoice;
+            $product_invoice->invioce_number = $invoice_number;
+            $product_invoice->date = $request->date;
+            $product_invoice->note = $request->note;
+            $product_invoice->total_cost = $request->total_price[$key];
+            $product_invoice->status ='processing';
+            $product_invoice->date = Carbon::now();
+            $product_invoice->created_at = Carbon::now();
+            $product_invoice->save();
+            }
             foreach($request->material_id as $key => $item) { 
                 $quantity = $request->quantity[$key];
                 $material_id = $request->material_id[$key];
@@ -142,7 +153,7 @@ class ProductionToProductController extends Controller
                         $total_price = $quantity * $price;
                         $production_materials = new ProductionMaterial;
                         $production_materials->raw_material_id = $raw_materials_stock->id;
-                        $production_materials->invioce_number = $request->invioce_number;
+                        $production_materials->invioce_number = $invoice_number ;
                         $production_materials->total_price = $total_price;  
                         $production_materials->quantity = $quantity; 
                         $production_materials->price = $price; 

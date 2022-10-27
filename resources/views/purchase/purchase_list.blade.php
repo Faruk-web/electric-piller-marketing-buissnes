@@ -16,7 +16,7 @@
       <h2>Purchase Invoice List</h2>
       </div>
       <div class="col-md-2 text-right">
-        <a style="font-size: 14px;" href="{{route('purchase.invoice')}}" class="btn btn-primary btn-rounded">Purchase Invoice</a>
+        <!-- <a style="font-size: 14px;" href="{{route('purchase.invoice')}}" class="btn btn-primary btn-rounded">Purchase Invoice</a> -->
           <!-- <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#exampleModal">Add Material</button> -->
       </div>
       <div class="row">

@@ -16,7 +16,7 @@
       <h2>Product Invoice List</h2>
       </div>
       <div class="col-md-2 text-right">
-          <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#exampleModal" style="font-size:14px">Product Invoice</button>
+          <!-- <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#exampleModal" style="font-size:14px">Product Invoice</button> -->
       </div>
       <div class="row">
           <div class="col-md-12 text-danger">

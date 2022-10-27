@@ -139,19 +139,16 @@ class PurchaseInvoiceController extends Controller
                 if(!is_null($check_raw_materials_stock)) {
                     $db_stock = $check_raw_materials_stock->stock_quantity;
                     $rests_qty = $db_stock + $quantity ;
-                            $check_raw_materials_stock->stock_quantity =$rests_qty;
-                            $check_raw_materials_stock->save();
-                        }
-                        else {
-                            $raw_material_stock =   new RawMaterialStock;
-                            $raw_material_stock->material_id	=$material_info->id;
-                            $raw_material_stock->stock_quantity=$quantity ; 
-                            $raw_material_stock->date	=$request->date;
-                            $raw_material_stock->save();
-                        }
-
-               
-                
+                    $check_raw_materials_stock->stock_quantity =$rests_qty;
+                    $check_raw_materials_stock->save();
+                }
+                else {
+                    $raw_material_stock =   new RawMaterialStock;
+                    $raw_material_stock->material_id	=$material_info->id;
+                    $raw_material_stock->stock_quantity=$quantity ; 
+                    $raw_material_stock->date	=$request->date;
+                    $raw_material_stock->save();
+                }      
         }
             $supplier_id=Supplier::where('supplier_name',$request->supplier_name)->first();
             $total_invoice = PurchaseInvoice::count('id');
@@ -174,6 +171,7 @@ class PurchaseInvoiceController extends Controller
                 // $purchase_invoice->quantity	=$request->quantity[$key];
                 $purchase_invoice->total_gross	=$request->total_price[$key];
                 $purchase_invoice->date	=$request->date;
+                $purchase_material->date	=$request->note;
                 $purchase_invoice->supplier_id	=$supplier_id->id;
                 $purchase_invoice->save();
             }

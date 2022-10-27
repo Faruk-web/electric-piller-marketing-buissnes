@@ -52,8 +52,8 @@
                             </div>
                             <label for="">Date</label>
                             <input type="date" name="date" class="form-control" id="all_total">
-                            <!-- <div class="row">
-                                <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Note</label>
                                         <textarea class="form-control" name="note" cols="30" rows="5" value=""></textarea>
@@ -62,7 +62,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                             <div class="" style="padding-top:10px">
                                 <div class="form-group text-right">
                                 <button type="submit" class="btn btn-success">Submit</button>

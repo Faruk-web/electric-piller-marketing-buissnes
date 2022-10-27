@@ -32,7 +32,7 @@
                             <div class="col-md-8"></div>
                                 <div class="col-md-4">
                                     <label for="">Total Tk:</label>
-                                    <input type="hidden" class="form-control" name="invioce_number" value="{{$invoices_info->invioce_number}}">
+                                    <input type="hidden" class="form-control" name="invioce_number" value="">
                                     <input type="text" class="form-control" id="all_total" readonly>
                                 </div>
                             </div>
